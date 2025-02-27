@@ -14,9 +14,8 @@ public class Main {
         window.setSize(800, 600);
         window.setLocationRelativeTo(null);
 
-        GameBoard jogo = new GameBoard();
-        window.add(jogo);
-        jogo.requestFocusInWindow();
+        window.add(painel);
+        painel.requestFocusInWindow();
 
         painel.startGameThread();
 

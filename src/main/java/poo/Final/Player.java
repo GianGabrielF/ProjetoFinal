@@ -1,57 +1,74 @@
 package poo.Final;
 
-public class Player {
-    private int coordx, coordy;
-    private String direcao = "esquerda";
-    private final int [][] coordsInicial = {{13},{23}};
-    private String avatar;
+public class Player extends Entity {
+    private int pontos = 0;
+    private boolean modoEspecial = false;
+    private int tempoModoEspecial = 0;
 
-    public void movePlayer(){
-        switch(direcao){
-            case "direita" -> coordx++;
-            case "esquerda" -> coordx--;
-            case "cima" -> coordy++;
-            case "baixo" -> coordy--;
-            default -> coordx--;
-        }
+    private final int TEMPO_ESPECIAL = 120;
+    private final int COLISAO = 2;
+    private final int PONTO = 1;
+    private final int ESPECIAL = 4;
 
+
+
+    public Player() {
+        super('c', 22, 13,true);
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-
-    public String getDirecao() {
-        return direcao;
-    }
-
-    public void setDirecao(String direcao) {
-        this.direcao = direcao;
-    }
-
-    public int getCoordy() {
-        return coordy;
-    }
-
-    public void setCoordy(int coordy) {
-        this.coordy = coordy;
-    }
-
-    public int getCoordx() {
-        return coordx;
-    }
-
-    public void setCoordx(int coordx) {
-        this.coordx = coordx;
-    }
 
     public void comer(Mapa map){
-        if(map.getMapa()[coordx][coordy] == 1){
+        if(map.getMapa()[coordy][coordx] == PONTO){
             map.bolaComida(coordx, coordy);
+            aumentarPontos(10);
+        } else if (map.getMapa()[coordy][coordx] == ESPECIAL){
+            map.bolaComida(coordx, coordy);
+            ativarModoEspecial();
+            aumentarPontos(100);
         }
 
     }
 
+    public void ativarModoEspecial(){
+        this.modoEspecial = true;
+        this.tempoModoEspecial = TEMPO_ESPECIAL;
+    }
 
+    public void reduzirModoEspecial(int ghostEaten) {
+        if (modoEspecial) {
+            this.tempoModoEspecial--;
+            if (this.tempoModoEspecial <= 0) {
+                modoEspecial = false;
+                ghostEaten = 0;
+            }
+        }
+    }
+
+    public int getTempoModoEspecial() {
+        return tempoModoEspecial;
+    }
+
+    public void setTempoModoEspecial(int tempoModoEspecial) {
+        this.tempoModoEspecial = tempoModoEspecial;
+    }
+
+    public void setModoEspecial(boolean modoEspecial) {
+        this.modoEspecial = modoEspecial;
+    }
+
+    public void setPontos(int pontos) {
+        this.pontos = pontos;
+    }
+
+    public boolean isModoEspecial() {
+        return modoEspecial;
+    }
+
+    public int getPontos() {
+        return pontos;
+    }
+
+    public void aumentarPontos(int pontos) {
+        this.pontos += pontos;
+    }
 }
